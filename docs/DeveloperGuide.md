@@ -396,6 +396,7 @@ public CommandResult execute(Model model) throws CommandException {
 #### Developer Notes
 
 - Validation: The Person constructor validates fields (e.g., Email format, Height range).
+- Duplicate person criteria: If the email entered already exists in VitaBook, the person is considered a duplicate. This is because for our specific scenario, the user will need to send sensitive documents containing medical history to the patient's email and this is their primary mode of communication over phone.
 - Case Sensitivity: Allergies (al/) are case-insensitive (stored in lowercase).
 
 When a user issues a command such as `add n/John d/vegan`(simplified for this example, this command does not actually run in VitaBook), the following sequence of operations occurs:
@@ -668,7 +669,7 @@ public CommandResult execute(Model model) throws CommandException {
 ```
 #### Developer Notes
 - Immutable States: Each snapshot is a deep copy of AddressBook.
-- Non-Modifying Commands: list, find, sort do not trigger commits.
+- Non-Modifying Commands: list, find, sort, help do not trigger commits.
 - UI Sync: The UI refreshes automatically after undo/redo via Model observers.
 
 Additionally, it implements the following operations:
