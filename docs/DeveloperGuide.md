@@ -206,12 +206,12 @@ The [Architecture](#architecture) subsection presents a visual and conceptual ov
 │      UI         │    │     Logic       │    │     Model       │
 │ (JavaFX)        │◄──►│ (Command Parser)│◄──►│ (Patient Data)  │
 └─────────────────┘    └─────────────────┘    └────────┬────────┘
-                                                      ▲
-                                                      │
-                                               ┌──────▼──────┐
-                                               │   Storage   │
-                                               │  (JSON I/O) │
-                                               └─────────────┘
+                                                       ▲
+                                                       │
+                                                ┌──────▼──────┐
+                                                │   Storage   │
+                                                │  (JSON I/O) │
+                                                └─────────────┘
 ```
 
 VitaBook is designed with four main components:
