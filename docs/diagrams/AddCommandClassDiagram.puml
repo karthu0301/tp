@@ -1,4 +1,9 @@
 @startuml
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor LOGIC_COLOR
+skinparam classBackgroundColor LOGIC_COLOR
+
 class AddCommand {
   - Person toAdd
   + AddCommand(Person)

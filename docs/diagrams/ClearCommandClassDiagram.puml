@@ -1,9 +1,16 @@
 @startuml
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor LOGIC_COLOR
+skinparam classBackgroundColor LOGIC_COLOR
+
 class ClearCommand {
   + execute(Model): CommandResult
 }
 
 class AddressBook
+
+class "<<interface>>\nModel" as Model
 
 ClearCommand -> AddressBook
 ClearCommand -> Model : setAddressBook(AddressBook)

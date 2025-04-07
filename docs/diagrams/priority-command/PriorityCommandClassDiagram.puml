@@ -1,4 +1,9 @@
 @startuml
+!include ../style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor LOGIC_COLOR
+skinparam classBackgroundColor LOGIC_COLOR
+
 class PriorityCommand {
   - index: Index
   - priority: Priority
@@ -9,7 +14,7 @@ class PriorityCommand {
 
 PriorityCommand --|> Command
 
-class Command {
+class "{abstract}\nCommand" as Command {
   + execute(model: Model): CommandResult
 }
 
@@ -23,7 +28,7 @@ class Index {
 
 class Priority
 
-class Model {
+class "<<interface>>\nModel" as Model {
   +getFilteredPersonList(): List<Person>
   +setPerson(old: Person, updated: Person)
 }
