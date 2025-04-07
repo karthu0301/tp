@@ -89,7 +89,7 @@ VitaBook is built just for you, nutritionists — with commands tailored to your
 - **[Edit Patient](#2-1-3-editing-a-patient-edit)** — `edit` : Update patient details as their care evolves.
 - **[Priority](#2-1-4-changing-a-patient-s-priority-priority)** — `priority` : Reprioritise patients based on urgency or attention needed.
 - **[Filter](#2-1-7-filtering-patients-filter)** — `filter` : Narrow down your list by priority, diet, gender, or meeting date.
-- **[Sort](#2-1-8-sorting-patients-sort)** — `sort` : Instantly organise patients by what matters most — priority, name, or diet.
+- **[Sort](#2-1-8-sorting-patients-sort)** — `sort` : Instantly organise patients by what matters most — priority, name, diet, or meeting date.
 
 [↓ Go to Command Summary for Quick Reference!](#5-command-summary-2)
 
