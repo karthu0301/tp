@@ -3,8 +3,8 @@
     "windowWidth" : 1549.0,
     "windowHeight" : 925.0,
     "windowCoordinates" : {
-      "x" : 0,
-      "y" : 44
+      "x" : -6,
+      "y" : -6
     }
   },
   "addressBookFilePath" : "data/vitabook.json"
