@@ -61,6 +61,7 @@ to get started!
       4. [Non-Functional Requirements](#non-functional-requirements)
       5. [Glossary](#glossary)
    2. [Manual Testing](#appendix-instructions-for-manual-testing)
+   3. [Planned Enhancements](#appendix-planned-enhancements)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -1190,3 +1191,53 @@ Given below are instructions to test the app manually.
     - Non-English names (e.g., `add n/李华`), note that they are not supported.
 
 **Critical**: Always back up `data/patients.json` before testing destructive commands (`clear`, `delete`).
+
+--------------------------------------------------------------------------------------------------------------------
+
+## Appendix: Planned Enhancements
+
+Team size: 5
+
+### 1. Allow sorting by descending order for name, diet, and meeting date
+
+Currently, the `sort` command only supports sorting in ascending order for name (A–Z), diet (A–Z), and meeting date (earliest to latest).
+There is no option to sort by descending order (e.g., Z–A by name, latest meeting date first).
+We plan to enhance the `sort` command to support descending order sorting.
+
+The proposed changes are: Add an optional `/desc` flag to the sort command.
+
+Example:
+1. `sort name /desc` → sorts patient names from Z–A.
+2. `sort diet /desc` → sorts diets from Z–A.
+3. `sort meetingdate /desc` → sorts by latest meeting date first.
+4. If `/desc` is not provided, sorting will default to ascending order (current behavior).
+5. This improvement will allow users to view records in their preferred order more flexibly.
+
+### 2. Support multiple field filters in a single filter command
+
+Currently, VitaBook’s `filter` command supports filtering by only one field (e.g., priority, diet, gender, or meeting date) at a time.
+Users cannot filter by multiple fields simultaneously (e.g., find all patients who have priority 'low' and gender 'female').
+We plan to enhance the `filter` command to support multiple fields being combined in a single filter.
+
+The proposed changes are: Allow chaining multiple field-value pairs together in one command.
+
+Example:
+1. `filter pr/low g/f` → finds all patients with priority "low" and gender "female".
+2. `filter d/low fat m/2025-05-01` → finds all patients who have low fat diet and have a meeting on 2025-05-01.
+3. Multiple fields will be combined using logical AND by default.
+4. This improvement will make patient searching much more powerful and flexible for users managing large databases.
+
+### 3. Allow specifying multiple restricted diets for a patient
+
+Currently, VitaBook only allows one restricted diet to be recorded for each patient.
+If multiple restricted diets are entered (e.g., low sodium, low fat), the input will be rejected.
+We plan to enhance the application to allow patients to have multiple restricted diets.
+
+The proposed changes are: Allow multiple diet values to be specified during patient creation or editing.
+
+Example:
+
+1. `d/low sodium d/low fat` → patient will be tagged with both "low sodium" and "low fat" dietary restrictions.
+2. Display multiple diets clearly in the patient's details view, similar to how allergies are listed.
+3. This improvement will better support patients with complex dietary needs involving multiple restrictions.
+
