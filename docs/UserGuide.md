@@ -204,10 +204,22 @@ Format: `add n/NAME g/GENDER h/HEIGHT w/WEIGHT no/PHONE e/EMAIL a/ADDRESS d/DIET
 7. Priority must be one of the following: `high`, `medium`, `low` (case-insensitive).
 
 8. Diet must be one of the following: `regular`, `low sodium`, `low fat`, `low carb`, `low sugar` (case-insensitive).
+   * Only one diet can be assigned per person for simplicity. Additional specialisations can be added in remarks.
 
 9. Meeting date must be in the format `YYYY-MM-DD`.
 
 10. Phone number must be a positive integer of **exactly** 8 digits and starts with 6, 8 or 9.
+
+11. Email address follows RFC 5322 standards:
+    * The local part (before @) can include letters, numbers, and limited special characters (+, _, ., -), but must not start or end with a special character, and cannot have consecutive periods (..). 
+    * The domain (after @) must consist of domain labels separated by periods, where each label starts and ends with a letter or number, and hyphens are allowed inside labels. 
+    * The top-level domain (TLD) must contain only letters, be between 2 and 63 characters long, and be a recognized domain like .com or .org.
+
+12. If you need to enter a / inside a patient's name or other fields (e.g., Charlie A/P),
+    make sure that any part before or after the / is capitalised (e.g., A/P) to avoid confusion with command field prefixes like a/ for address.
+    * Example
+      * Correct: Charlie A/P 
+      * Avoid: Charlie a/p (might be treated as address input)
 </box>
 
 Examples:
@@ -261,7 +273,7 @@ When editing allergies, the existing allergies will be replaced by the new ones 
 
 Changes a patient's priority by their index.
 
-Format: `priority INDEX pr/PRIORITY`
+Format: `priority INDEX pr/PRIORITY` / `pr INDEX pr/PRIORITY`
 
 <box type="tip" seamless>
 
@@ -330,10 +342,10 @@ e.g `hans` will match `Hans`
 2. The order of the keywords does not matter.<br>
 e.g. `Hans Bo` will match `Bo Hans`
 
-3. Only the name is searched.
+3. Only parts of the name is searched.
 
-4. Only full words will be matched.<br>
-e.g. `Han` will not match `Hans`
+4. Partial words can be matched.<br>
+e.g. `Han` will match `Hans`
 
 5. Patients whose name matches any of the given keywords will be returned (i.e. `OR` search).<br>
 e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
@@ -361,9 +373,16 @@ Format: `filter pr/PRIORITY` or `filter d/DIET` or `filter g/GENDER` or `filter 
 <box type="tip" seamless>
 
 **To note:**
-1. At least one field to filter must be provided.
+1. Only one field to filter to be provided at one time. 
+
+Example:
+* `filter pr/high g/f` will not work and will give a error message.
 
 2. The fields used in the `filter` command follows the same constraints as specified in the `add` command.
+
+3. Using commands like add, edit and remark after `filter` would return to main list in the full form.
+
+4. Using commands like delete and priority after `filter` would retain the list in the filtered form, unless the new priority value contradicts the filtered priority value.
 </box>
 
 Examples:
