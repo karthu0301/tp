@@ -877,11 +877,11 @@ User stories for the MVP version:
 
 **MSS:**
 
-| No. | MSS                                                                                             | Extensions |
-|-----|-------------------------------------------------------------------------------------------------|------------|
-| 1   | Nutritionist wants to view all registered patients.                                             | N.A.       |
-| 2   | Nutritionist types the list command.                                                            | N.A.       |
-| 3   | VitaBook displays the complete list of patients, ordered by the order of entry. Use case ends.  | N.A.       |
+| No. | MSS                                                                                                                                 | Extensions |
+|-----|-------------------------------------------------------------------------------------------------------------------------------------|------------|
+| 1   | Nutritionist wants to view all registered patients.                                                                                 | N.A.       |
+| 2   | Nutritionist types the list command.                                                                                                | N.A.       |
+| 3   | VitaBook displays the complete list of patients, ordered by the order of entry or by the last sort criteria applied. Use case ends. | N.A.       |
 
 **Use Case: UC03 - Edit Patient**
 
@@ -1083,8 +1083,9 @@ User stories for the MVP version:
 
 Given below are instructions to test the app manually.
 
-**Note:** These instructions provide a foundation for testers. Exploratory testing is encouraged.
+**Note:** These instructions provide a foundation for testers. Exploratory testing is encouraged.<br>
 
+**Disclaimer:** VitaBook does not support localization. Only English characters are accepted for patient data, and the UI and messages are in English.
 
 ---
 
@@ -1187,6 +1188,6 @@ Given below are instructions to test the app manually.
 2. **Data Limits**:
     - Test with 1000+ patients for performance.
 3. **Localization**:
-    - Non-English names (e.g., `add n/李华`).
+    - Non-English names (e.g., `add n/李华`), note that they are not supported.
 
 **Critical**: Always back up `data/patients.json` before testing destructive commands (`clear`, `delete`).
