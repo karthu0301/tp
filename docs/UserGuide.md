@@ -44,7 +44,7 @@ Welcome to **VitaBook** — your go-to desktop companion made just for **freelan
 
 ##### [3. FAQ](#3-faq-2)
 
-##### [4. Known Issues](#4-known-issues-2)
+##### [4. Known Limitations](#4-known-limitations-2)
 
 ##### [5. Command Summary](#5-command-summary-2)
 
@@ -215,6 +215,7 @@ Format: `add n/NAME g/GENDER h/HEIGHT w/WEIGHT no/PHONE e/EMAIL a/ADDRESS d/DIET
     * The domain (after @) must consist of domain labels separated by periods, where each label starts and ends with a letter or number, and hyphens are allowed inside labels. 
     * The top-level domain (TLD) must contain only letters, be between 2 and 63 characters long, and be a recognized domain like .com or .org.
 
+
 12. If you need to enter a / inside a patient's name or other fields (e.g., Charlie A/P),
     make sure that any part before or after the / is capitalised (e.g., A/P) to avoid confusion with command field prefixes like a/ for address.
     * Example
@@ -255,6 +256,18 @@ Format: `edit INDEX [n/NAME] [g/GENDER] [h/HEIGHT] [w/WEIGHT] [no/PHONE] [e/EMAI
 4. You can remove all the patient’s allergies by typing `al/` without specifying any allergies after it.
 
 5. The fields used in the `edit` command follow the same constraints as specified in the `add` command.
+
+6. Email address follows RFC 5322 standards:
+    * The local part (before @) can include letters, numbers, and limited special characters (+, _, ., -), but must not start or end with a special character, and cannot have consecutive periods (..).
+    * The domain (after @) must consist of domain labels separated by periods, where each label starts and ends with a letter or number, and hyphens are allowed inside labels.
+    * The top-level domain (TLD) must contain only letters, be between 2 and 63 characters long, and be a recognized domain like .com or .org.
+
+
+7. If you need to enter a / inside a patient's name or other fields (e.g., Charlie A/P),
+    make sure that any part before or after the / is capitalised (e.g., A/P) to avoid confusion with command field prefixes like a/ for address.
+    * Example
+        * Correct: Charlie A/P
+        * Avoid: Charlie a/p (might be treated as address input)
 </box>
 
 Examples:
@@ -610,10 +623,10 @@ Furthermore, certain edits can cause the VitaBook to behave in unexpected ways (
 
 --------------------------------------------------------------------------------------------------------------------
 
-## 4. Known Issues 🐞
+## 4. Known Limitations 🐞
 
 - **Allergy fields are case-sensitive.**
-  Adding allergies like `peanuts` and `Peanuts` results in two different allergies being stored. This can lead to duplicates or confusion when filtering/searching.
+  Adding allergies like `peanuts` and `Peanuts` results in two different allergies being stored.
 
 - **Allergy Validation is only alphanumeric.**
   User can enter any combination of letters and numbers, even if they don't represent actual allergies. This is because maintaining a complete list of all possible allergies is not feasible.
