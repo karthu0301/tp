@@ -17,7 +17,7 @@ all parts of the software and how they will work.
 
 You can use this guide to maintain, upgrade, and evolve VitaBook.
 
-This Developer Guide is accurate as of 2 April 2025.
+This Developer Guide is accurate as of 8 April 2025.
 
 Head over to [How to use this Developer Guide](#how-to-use-this-developer-guide)
 to get started!
