@@ -42,9 +42,7 @@ public class EmailTest {
         assertFalse(Email.isValidEmail("peterjack@example.com ")); // trailing space
         assertFalse(Email.isValidEmail("peterjack@@example.com")); // double '@' symbol
         assertFalse(Email.isValidEmail("peter@jack@example.com")); // '@' symbol in local part
-        assertFalse(Email.isValidEmail("-peterjack@example.com")); // local part starts with a hyphen
-        assertFalse(Email.isValidEmail("peterjack-@example.com")); // local part ends with a hyphen
-        assertFalse(Email.isValidEmail("peter..jack@example.com")); // local part has two consecutive periods
+        assertFalse(Email.isValidEmail("peter..jack@example.com")); // consecutive periods in local part
         assertFalse(Email.isValidEmail("peterjack@example@com")); // '@' symbol in domain name
         assertFalse(Email.isValidEmail("peterjack@.example.com")); // domain name starts with a period
         assertFalse(Email.isValidEmail("peterjack@example.com.")); // domain name ends with a period
@@ -53,8 +51,9 @@ public class EmailTest {
         assertFalse(Email.isValidEmail("peterjack@example.c")); // top level domain has less than two chars
         assertFalse(Email.isValidEmail("a@bc")); // missing TLD
         assertFalse(Email.isValidEmail("test@localhost")); // no valid TLD
+        assertFalse(Email.isValidEmail("test@example.abcxyz")); // invalid TLD not in whitelist
 
-        // valid email
+        // valid emails (RFC 5322 compliant cases)
         assertTrue(Email.isValidEmail("PeterJack_1190@example.com")); // underscore in local part
         assertTrue(Email.isValidEmail("PeterJack.1190@example.com")); // period in local part
         assertTrue(Email.isValidEmail("PeterJack+1190@example.com")); // '+' symbol in local part
@@ -64,6 +63,10 @@ public class EmailTest {
         assertTrue(Email.isValidEmail("peter_jack@very-very-very-long-example.com")); // long domain name
         assertTrue(Email.isValidEmail("if.you.dream.it_you.can.do.it@example.com")); // long local part
         assertTrue(Email.isValidEmail("e1234567@u.nus.edu")); // more than one period in domain
+        assertTrue(Email.isValidEmail("email--@domain.com")); // consecutive hyphens allowed
+        assertTrue(Email.isValidEmail("user+mailbox/department=shipping@example.com")); // special chars allowed
+        assertTrue(Email.isValidEmail("customer/department=shipping@example.com")); // more special chars
+        assertTrue(Email.isValidEmail("!def!xyz%abc@example.com")); // special chars like '!' and '%'
     }
 
     @Test

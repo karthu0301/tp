@@ -13,7 +13,7 @@ import seedu.address.model.person.Priority;
  */
 public class PriorityCommandParser implements Parser<PriorityCommand> {
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n"
-            + "Try priority [INDEX] pr/[PRIORITY LEVEL]. ";
+            + "Try priority INDEX (must be a positive integer) pr/PRIORITY. ";
 
     /**
      * Parses the given {@code String} of arguments in the context of the PriorityCommand
