@@ -304,7 +304,7 @@ Format: `remark INDEX r/[REMARK]`
 3. You can remove a patient's remark by typing `r/` without specifying any remarks after it.
 
 4. You can add or edit exactly one remark for each patient.<br>
-e.g. `remark 1 r/one r/two` will result in an error message being thrown.
+e.g. `remark 1 r/needs visual guides r/very motivated` will result in an error message being thrown.
 </box>
 
 <a href="images/multipleRemarksResult.png">
@@ -312,7 +312,7 @@ e.g. `remark 1 r/one r/two` will result in an error message being thrown.
 <img src="images/multipleRemarksResult.png" alt="result for 'remark 1 r/needs visual guides r/very motivated'" style="width: 100%; max-width: 700px; display: block;">
 </a>
 
-*Figure 3: Result when adding multiple remarks to a patient using `remark 1 r/one r/two`*
+*Figure 3: Result when adding multiple remarks to a patient using `remark 1 r/needs visual guides r/very motivated`*
 
 Examples:
 * `list` followed by `remark 2 r/Enjoyed last week's meal plan, keep similar items` adds a remark to the 2nd patient in the patient list.
