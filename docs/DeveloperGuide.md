@@ -1052,7 +1052,7 @@ User stories for the MVP version:
 | Term               | Definition                                                                 | Example/Notes                                                                |
 |--------------------|---------------------------------------------------------------------------|------------------------------------------------------------------------------|
 | **JAR File**       | Executable Java package containing all dependencies.                       | Run VitaBook via `java -jar vitabook.jar`                                   |
-| **JSON**           | Data storage format for patient records.                                   | Human-editable file at `./data/patients.json`                               |
+| **JSON**           | Data storage format for patient records.                                   | Human-editable file at `./data/vitabook.json`                               |
 | **Mainstream OS**  | Supported operating systems.                                               | Windows 10+, macOS 12+, Linux (Ubuntu 20.04+)                              |
 
 ### Medical/Dietary Terms
@@ -1146,6 +1146,7 @@ Given below are instructions to test the app manually.
 |-----------|--------------|------------------|
 | `sort name` | Multiple patients | Sorts alphabetically by name |
 | `sort priority` | Multiple patients | Sorts by priority (high→low) then name |
+| `sort meetingdate` | Multiple patients | Sorts by by date from earliest to latest then name |
 | `sort invalid` | - | Error: `"Invalid sort type. Use: priority/name/diet"` |
 
 #### **Delete Command**
@@ -1174,7 +1175,7 @@ Given below are instructions to test the app manually.
 | Scenario | Test Case | Expected Outcome |
 |----------|-----------|------------------|
 | Invalid command | `invalidCmd` | Shows error + command list |
-| File corruption | Manually corrupt `data/patients.json` | Auto-generates new file on launch |
+| File corruption | Manually corrupt `data/vitabook.json` | Auto-generates new file on launch |
 | Keyboard interrupt | Press `Ctrl+C` during command | Returns to input prompt |
 
 ---
