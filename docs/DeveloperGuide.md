@@ -7,8 +7,8 @@ pageNav: 3
 # VitaBook Developer Guide
 
 **VitaBook** is a **desktop application for freelance nutritionists**
-to manage patient profiles, dietary information, and follow-ups efficiently.
-Built for speed and efficiency, VitaBook integrates a powerful **Command Line Interface (CLI)** with a clean.
+based in Singapore to manage patient profiles, dietary information, and follow-ups efficiently.
+Built for speed and efficiency, VitaBook integrates a powerful **Command Line Interface (CLI)** with a clean
 **Graphical User Interface (GUI)**, allowing you to quickly retrieve and update patient records while on the go.
 
 This Developer Guide provides in-depth documentation on how VitaBook is designed and implemented.
@@ -25,18 +25,14 @@ to get started!
 --------------------------------------------------------------------------------------------------------------------
 ## Table of Contents
 1. [Introduction](#vitabook-developer-guide)
-   1. [About Us](#about-us)
-   2. [Acknowledgements](#acknowledgements)
-   3. [Setting up, getting started](#setting-up-getting-started)
-   4. [How to Use This Developer Guide](#how-to-use-this-developer-guide)
+   1. [Acknowledgements](#acknowledgements)
+   2. [Setting up, getting started](#setting-up-getting-started)
+   3. [How to Use This Developer Guide](#how-to-use-this-developer-guide)
 
 2. [Design](#design)
     1. [Architecture](#architecture)
-        - [Component Diagram](#architecture)
-        - [Sequence Diagram](#architecture-sequence-diagram)
     2. [UI Component](#ui-component)
     3. [Logic Component](#logic-component)
-        - [Parser Classes](#parser-classes)
     4. [Model Component](#model-component)
     5. [Storage Component](#storage-component)
     6. [Common Classes](#common-classes)
@@ -49,16 +45,16 @@ to get started!
     5. [Sort Command](#sort-command-implementation)
     6. [Filter Command](#filter-command-implementation)
     7. [Command History](#command-history-implementation)
-    8. [Undo/Redo Command](#undoredo-command-implementation)
+    8. [Undo/Redo Command](#undo-redo-command-implementation)
 
 4. [Documentation, logging, testing, configuration, dev-ops](#documentation-logging-testing-configuration-dev-ops)
 
-5. [Appendix](#appendix)
+5. [Appendix](#appendix-requirements)
    1. [Requirements](#appendix-requirements)
       1. [Product Scope](#product-scope)
       2. [User Stories](#user-stories)
       3. [Use Cases](#use-cases)
-      4. [Non-Functional Requirements](#non-functional-requirements)
+      4. [Non-Functional Requirements](#non-functional-requirements-nfrs)
       5. [Glossary](#glossary)
    2. [Manual Testing](#appendix-instructions-for-manual-testing)
    3. [Planned Enhancements](#appendix-planned-enhancements)
