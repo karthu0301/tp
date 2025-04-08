@@ -392,7 +392,7 @@ public CommandResult execute(Model model) throws CommandException {
 ```
 
 - Example Usage:
-```add n/John Doe g/m h/1.75 w/70.00 no/98765432 e/john@example.com a/123 Street d/vegan pr/high m/2025-12-31 al/peanuts```
+```add n/John Doe g/m h/1.75 w/70.00 no/98765432 e/john@example.com a/123 Street d/low sodium pr/high m/2025-12-31 al/peanuts```
 
 #### Developer Notes
 
@@ -400,7 +400,7 @@ public CommandResult execute(Model model) throws CommandException {
 - Duplicate person criteria: If the email entered already exists in VitaBook, the person will be considered a duplicate. This is because in our unique context, the nutritionist uses the email to primarily contact the patient and send sensitive documents.
 - Case Sensitivity: Allergies (al/) are case-insensitive (stored in lowercase).
 
-When a user issues a command such as `add n/John d/vegan`(simplified for this example, this command does not actually run in VitaBook), the following sequence of operations occurs:
+When a user issues a command such as `add n/John d/low sodium`(simplified for this example, this command does not actually run in VitaBook), the following sequence of operations occurs:
 
 1. The input is parsed by `AddCommandParser`, which creates a `Person` object and wraps it inside an `AddCommand`.
 2. The `LogicManager` executes the command by calling its `execute(Model model)` method.
@@ -581,10 +581,10 @@ Predicate<Person> filterPredicate = switch (prefix) {
     // ... (other cases)
 };
 ```
-- Example usage: `filter d/vegan`
+- Example usage: `filter d/low sodium`
 
 #### Developer Notes
-- Case Insensitivity: Filters are case-insensitive (e.g., d/vegan matches Vegan).
+- Case Insensitivity: Filters are case-insensitive (e.g., d/low sodium matches Low Sodium).
 
 `FilterCommand` behaviour:
 
@@ -814,7 +814,7 @@ The following activity diagram summarizes what happens when a user executes a ne
 VitaBook is a **command-line interface (CLI) application** designed for freelance nutritionists who need to manage patient profiles efficiently. It offers:
 
 - **Speed**: Perform tasks 3x faster than GUI apps with keyboard-only commands (e.g., add a patient in under 10 seconds).
-- **Organization**: Filter/sort patients by diet, priority, or allergies with simple commands (e.g., `filter d/vegan`).
+- **Organization**: Filter/sort patients by diet, priority, or allergies with simple commands (e.g., `filter d/low sodium`).
 - **Portability**: Runs on any OS (Windows/macOS/Linux) with Java 17+—no installation needed. Just launch the JAR file.
 - **Data Control**: Human-editable JSON storage for easy backups and manual edits.
 
@@ -1055,7 +1055,7 @@ User stories for the MVP version:
 | Term               | Definition                                                                 | Example/Notes                                                                |
 |--------------------|---------------------------------------------------------------------------|------------------------------------------------------------------------------|
 | **JAR File**       | Executable Java package containing all dependencies.                       | Run VitaBook via `java -jar vitabook.jar`                                   |
-| **JSON**           | Data storage format for patient records.                                   | Human-editable file at `./data/patients.json`                               |
+| **JSON**           | Data storage format for patient records.                                   | Human-editable file at `./data/vitabook.json`                               |
 | **Mainstream OS**  | Supported operating systems.                                               | Windows 10+, macOS 12+, Linux (Ubuntu 20.04+)                              |
 
 ### Medical/Dietary Terms
@@ -1149,6 +1149,7 @@ Given below are instructions to test the app manually.
 |-----------|--------------|------------------|
 | `sort name` | Multiple patients | Sorts alphabetically by name |
 | `sort priority` | Multiple patients | Sorts by priority (high→low) then name |
+| `sort meetingdate` | Multiple patients | Sorts by by date from earliest to latest then name |
 | `sort invalid` | - | Error: `"Invalid sort type. Use: priority/name/diet"` |
 
 #### **Delete Command**
@@ -1177,7 +1178,7 @@ Given below are instructions to test the app manually.
 | Scenario | Test Case | Expected Outcome |
 |----------|-----------|------------------|
 | Invalid command | `invalidCmd` | Shows error + command list |
-| File corruption | Manually corrupt `data/patients.json` | Auto-generates new file on launch |
+| File corruption | Manually corrupt `data/vitabook.json` | Auto-generates new file on launch |
 | Keyboard interrupt | Press `Ctrl+C` during command | Returns to input prompt |
 
 ---
