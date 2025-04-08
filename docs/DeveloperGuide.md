@@ -17,7 +17,7 @@ all parts of the software and how they will work.
 
 You can use this guide to maintain, upgrade, and evolve VitaBook.
 
-This Developer Guide is accurate as of 2 April 2025.
+This Developer Guide is accurate as of 8 April 2025.
 
 Head over to [How to use this Developer Guide](#how-to-use-this-developer-guide)
 to get started!
@@ -206,12 +206,12 @@ The [Architecture](#architecture) subsection presents a visual and conceptual ov
 │      UI         │    │     Logic       │    │     Model       │
 │ (JavaFX)        │◄──►│ (Command Parser)│◄──►│ (Patient Data)  │
 └─────────────────┘    └─────────────────┘    └────────┬────────┘
-                                                      ▲
-                                                      │
-                                               ┌──────▼──────┐
-                                               │   Storage   │
-                                               │  (JSON I/O) │
-                                               └─────────────┘
+                                                       ▲
+                                                       │
+                                                ┌──────▼──────┐
+                                                │   Storage   │
+                                                │  (JSON I/O) │
+                                                └─────────────┘
 ```
 
 VitaBook is designed with four main components:
