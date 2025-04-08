@@ -164,8 +164,8 @@ This guide provides comprehensive technical documentation for **VitaBook**, cove
     - Test cases follow Given-When-Then format
 
 3. **Version Info**:
-    - All documentation matches **VitaBook v2.1**
-    - Last updated: 2 April 2025
+    - All documentation matches **VitaBook v1.6**
+    - Last updated: 8 April 2025
 
 ### Troubleshooting
 If content appears unclear:
@@ -388,7 +388,7 @@ public CommandResult execute(Model model) throws CommandException {
 ```
 
 - Example Usage:
-```add n/John Doe g/m h/1.75 w/70.00 no/98765432 e/john@example.com a/123 Street d/vegan pr/high m/2025-12-31 al/peanuts```
+```add n/John Doe g/m h/1.75 w/70.00 no/98765432 e/john@example.com a/123 Street d/low sodium pr/high m/2025-12-31 al/peanuts```
 
 #### Developer Notes
 
@@ -396,7 +396,7 @@ public CommandResult execute(Model model) throws CommandException {
 - Duplicate person criteria: If the email entered already exists in VitaBook, the person will be considered a duplicate. This is because in our unique context, the nutritionist uses the email to primarily contact the patient and send sensitive documents.
 - Case Sensitivity: Allergies (al/) are case-insensitive (stored in lowercase).
 
-When a user issues a command such as `add n/John d/vegan`(simplified for this example, this command does not actually run in VitaBook), the following sequence of operations occurs:
+When a user issues a command such as `add n/John d/regular`(simplified for this example, this command does not actually run in VitaBook), the following sequence of operations occurs:
 
 1. The input is parsed by `AddCommandParser`, which creates a `Person` object and wraps it inside an `AddCommand`.
 2. The `LogicManager` executes the command by calling its `execute(Model model)` method.
@@ -508,7 +508,7 @@ Person updatedPerson = new Person(
 - Example usage: `priority 2 pr/high`
 
 #### Developer Notes
-- Shortcut: pr/ can be used instead of priority.
+- Shortcut: `pr` can be used in place of `priority`.
 
 When a user issues a command such as `priority 2 pr/HIGH`, the following sequence of operations occurs:
 
@@ -577,10 +577,10 @@ Predicate<Person> filterPredicate = switch (prefix) {
     // ... (other cases)
 };
 ```
-- Example usage: `filter d/vegan`
+- Example usage: `filter d/low fat`
 
 #### Developer Notes
-- Case Insensitivity: Filters are case-insensitive (e.g., d/vegan matches Vegan).
+- Case Insensitivity: `filter` takes in values that are case-insensitive (e.g., d/Low Fat matches low fat).
 
 `FilterCommand` behaviour:
 
@@ -748,26 +748,26 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 ### Command-Specific Edge Cases
 
-| Command | Edge Case                                     | System Response                                          | Handling Mechanism                                  |
-|--------|-----------------------------------------------|----------------------------------------------------------|-----------------------------------------------------|
-| **Add** | Duplicate patient (same name + phone)         | `"This person already exists in VitaBook"`               | `AddCommand#execute()` checks `model.hasPerson()`   |
-|        | Missing required fields (e.g., no `n/NAME`)   | Shows `MESSAGE_USAGE` with format                        | `AddCommandParser` validates prefixes               |
-|        | Invalid field format (e.g., `h/abc`)          | Field-specific error (e.g., `"Height must be a number"`) | Field class constructors validate input             |
-| **Edit** | Invalid index (e.g., `edit 999`)              | `"Invalid patient index"`                                | Checks `index.getZeroBased() >= list.size()`        |
-|        | No fields edited                              | `"At least one field to edit must be provided"`          | `EditPersonDescriptor#isAnyFieldEdited()`           |
-|        | Duplicate after edit                          | `"This patient already exists in VitaBook"`              | `model.hasPerson()` check                           |
-| **Clear** | Empty address book                            | `"Nothing on list!"`                                     | `model.getAddressBook().isEmpty()` check            |
-|        | User cancels confirmation                     | `"Clear command cancelled"`                              | `ClearDialogUtil.showConfirmationDialog()`          |
-| **Priority** | Invalid priority value (e.g., `pr/INVALID`)   | `"Priority must be low, medium, or high"`                | `Priority` enum validation                          |
-|        | Invalid index                                 | `"Invalid patient index"`                                | Index bounds check                                  |
-| **Sort** | Invalid sort type (e.g., `sort invalid`)      | `"Invalid sort type. Use: priority/name/diet"`           | `switch` default case throws error                  |
-|        | Empty list                                    | Silent (no action)                                       | Implicit in sorting logic                           |
-| **Filter** | Invalid prefix (e.g., `filter x/abc`)         | `"Unexpected error: invalid filter prefix"`              | Default `switch` case                               |
-|        | No matches                                    | Empty list (no error)                                    | Predicate returns `false` for all                   |
-| **Undo/Redo** | Undo at initial state                         | `"No previous state to undo"`                            | `model.canUndoAddressBook()` check                  |
-|        | Redo at latest state                          | `"No next state to redo"`                                | `model.canRedoAddressBook()` check                  |
-|        | Non-modifying command (e.g., `list`)          | No state change                                          | Skips `Model#commitAddressBook()`                   |
-|        | Executing a new command after an undo         | Purges the redo history                                  | `VersionedAddressBook#commit()`                     |
+| Command       | Edge Case                                   | System Response                                                                              | Handling Mechanism                                   |
+|---------------|---------------------------------------------|----------------------------------------------------------------------------------------------|------------------------------------------------------|
+| **Add**       | Duplicate patient (same name + phone)       | `"This person already exists in VitaBook"`                                                   | `AddCommand#execute()` checks `model.hasPerson()`    |
+|               | Missing required fields (e.g., no `n/NAME`) | Shows `"The following required field(s) is/are missing: n/"` with `MESSAGE_USAGE` and format | `AddCommandParser` validates prefixes                |
+|               | Invalid field format (e.g., `h/abc`)        | `"Height should be a number between 0.5 and 3.0 meters, and it should not be blank"`         | Field class constructors validate input              |
+| **Edit**      | Invalid index (e.g., `edit 999 n/John`)     | `"Invalid patient index"`                                                                    | Checks `index.getZeroBased() >= list.size()`         |
+|               | No fields edited                            | `"At least one field to edit must be provided"`                                              | `EditPersonDescriptor#isAnyFieldEdited()`            |
+|               | Duplicate after edit                        | `"This patient already exists in VitaBook"`                                                  | `model.hasPerson()` check                            |
+| **Clear**     | Empty address book                          | `"No patients in VitaBook!"`                                                                 | `model.getAddressBook().isEmpty()` check             |
+|               | User cancels confirmation                   | `"Clear command cancelled."`                                                                 | `ClearDialogUtil.showConfirmationDialog()`           |
+| **Priority**  | Invalid priority value (e.g., `pr/INVALID`) | `"Priority must be high, medium, or low"`                                                    | `Priority` enum validation                           |
+|               | Invalid index                               | `"Invalid patient index."`                                                                   | Index bounds check                                   |
+| **Sort**      | Invalid sort type (e.g., `sort invalid`)    | `"Invalid sort type. Use: sort priority / sort name / sort diet / sort meetingdate"`         | `switch` default case throws error                   | 
+|               | Empty list                                  | Silent (no action)                                                                           | Implicit in sorting logic                            |
+| **Filter**    | Invalid prefix (e.g., `filter x/abc`)       | `"Invalid filter prefix: 'x'` wtih `MESSAGE_USAGE` and  format                               | Default `switch` case                                |
+|               | No matches                                  | Empty list (no error)                                                                        | Predicate returns `false` for all                    |
+| **Undo/Redo** | Undo at initial state                       | `"No previous state to undo. Already at initial state."`                                     | `model.canUndoAddressBook()` check                   |
+|               | Redo at latest state                        | `"No next state to redo. Already at final state."`                                           | `model.canRedoAddressBook()` check                   |
+|               | Non-modifying command (e.g., `list`)        | No state change                                                                              | Skips `Model#commitAddressBook()`                    |
+|               | Executing a new command after an undo       | Purges the redo history                                                                      | `VersionedAddressBook#commit()`                      |
 
 ### General Edge Cases
 
@@ -810,7 +810,7 @@ The following activity diagram summarizes what happens when a user executes a ne
 VitaBook is a **command-line interface (CLI) application** designed for freelance nutritionists who need to manage patient profiles efficiently. It offers:
 
 - **Speed**: Perform tasks 3x faster than GUI apps with keyboard-only commands (e.g., add a patient in under 10 seconds).
-- **Organization**: Filter/sort patients by diet, priority, or allergies with simple commands (e.g., `filter d/vegan`).
+- **Organization**: Filter/sort patients by diet, priority, or meeting date with simple commands (e.g., `filter d/low carb`).
 - **Portability**: Runs on any OS (Windows/macOS/Linux) with Java 17+—no installation needed. Just launch the JAR file.
 - **Data Control**: Human-editable JSON storage for easy backups and manual edits.
 
@@ -861,14 +861,14 @@ User stories for the MVP version:
 
 **MSS:**
 
-| No. | MSS                                                                                                                                                                                                                        | Extensions                                                                                                                                                                                                    |
-|-----|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1   | Nutritionist decides to register a new patient in VitaBook.                                                                                                                                                                | N.A.                                                                                                                                                                                                          |
-| 2   | Nutritionist types the add command followed by all required patient details in the specified format.                                                                                                                       | N.A.                                                                                                                                                                                                          |
-| 3   | VitaBook checks that all fields (name, gender, height, weight, phone, email, address, diet, priority, meeting date) are present and correctly formatted.                                                                   | One or more fields are invalid or missing.<br/>  (a) VitaBook displays an error message specifying the field(s) that need correction.<br/>  (b) Nutritionist retypes the command with corrected input.        |
-| 4   | VitaBook checks that the email is unique.                                                                                                                                                                                  | A patient with the same email already exists.<br/>  (a) VitaBook rejects the addition and displays a duplicate email error.<br/>  (b) Nutritionist provides a different email. Use case resumes from step 3.  |
-| 5   | VitaBook adds the new patient to the system.                                                                                                                                                                               | Patient is added from a filtered list <br/> (a) VitaBook uses the filtered index correctly.                                                                                                                   |
-| 6   | VitaBook displays a success message with the newly added patient’s summary. After adding, VitaBook returns to displaying the full list, ordered by the order of entry or by the last sort criteria applied. Use case ends. | N.A.                                                                                                                                                                                                          |
+| No. | MSS                                                                                                                                                                                                                        | Extensions                                                                                                                                                                                                   |
+|-----|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1   | Nutritionist decides to register a new patient in VitaBook.                                                                                                                                                                | N.A.                                                                                                                                                                                                         |
+| 2   | Nutritionist types the add command followed by all required patient details in the specified format.                                                                                                                       | N.A.                                                                                                                                                                                                         |
+| 3   | VitaBook checks that all fields (name, gender, height, weight, phone, email, address, diet, priority, meeting date) are present and correctly formatted.                                                                   | One or more fields are invalid or missing.<br/>  (a) VitaBook displays an error message specifying the field(s) that need correction.<br/>  (b) Nutritionist retypes the command with corrected input.       |
+| 4   | VitaBook checks that the email is unique.                                                                                                                                                                                  | A patient with the same email already exists.<br/>  (a) VitaBook rejects the addition and displays a duplicate email error.<br/>  (b) Nutritionist provides a different email. Use case resumes from step 3. |
+| 5   | VitaBook adds the new patient to the system.                                                                                                                                                                               | Patient is added from a filtered list. <br/> (a) VitaBook uses the filtered index correctly.                                                                                                                 |
+| 6   | VitaBook displays a success message with the newly added patient’s summary. After adding, VitaBook returns to displaying the full list, ordered by the order of entry or by the last sort criteria applied. Use case ends. | N.A.                                                                                                                                                                                                         |
 
 **Use Case: UC02 - List Patients**
 
@@ -890,20 +890,20 @@ User stories for the MVP version:
 | 2   | Nutritionist types the edit command followed by the patient's index and the updated fields.                                                                                                                    | No fields are provided to update.<br/>  (a) VitaBook displays an error indicating at least one field is required.                               |
 | 3   | VitaBook validates the index and ensures the patient exists.                                                                                                                                                   | Index is invalid.<br/>  (a) VitaBook displays an index error message.<br/>  (b) Nutritionist re-enters the command with a valid index.          |
 | 4   | VitaBook validates all provided input fields.                                                                                                                                                                  | A field contains invalid data.<br/>  (a) VitaBook displays specific validation errors.<br/>  (b) Nutritionist corrects and retypes the command. |
-| 5   | VitaBook updates the patient information accordingly.                                                                                                                                                          | Patient is edited from a filtered list <br/> (a) VitaBook uses the filtered index correctly.                                                    |
+| 5   | VitaBook updates the patient information accordingly.                                                                                                                                                          | Patient is edited from a filtered list. <br/> (a) VitaBook uses the filtered index correctly.                                                   |
 | 6   | VitaBook displays a confirmation message with updated details. After editing, VitaBook returns to displaying the full list, ordered by the order of entry or by the last sort criteria applied. Use case ends. | N.A.                                                                                                                                            |
 
 **Use Case: UC04 - Add or Update Remark**
 
 **MSS:**
 
-| No. | MSS                                                                                                                                                                                         | Extensions                                                                                             |
-|-----|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
-| 1   | Nutritionist wants to add or update a note about a patient’s condition or behavior.                                                                                                         | N.A.                                                                                                   |
-| 2   | Nutritionist enters the remark command followed by the index of the patient and the remark content.                                                                                         | No remark content is provided.<br/>  (a) VitaBook clears the existing re mark and confirms the update. |
-| 3   | VitaBook validates the index.                                                                                                                                                               | Index is invalid.<br/>  (a) VitaBook displays an error.<br/>  (b) Nutritionist corrects the index.     |
-| 4   | VitaBook updates or adds the remark for the patient.                                                                                                                                        | Patient is added/edited from a filtered list <br/> (a) VitaBook uses the filtered index correctly.     |
-| 5   | VitaBook displays a success message. After adding/editing, VitaBook returns to displaying the full list, ordered by the order of entry or by the last sort criteria applied. Use case ends. | N.A.                                                                                                   |
+| No. | MSS                                                                                                                                                                                                  | Extensions                                                                                             |
+|-----|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
+| 1   | Nutritionist wants to add or update a note about a patient’s condition or behavior.                                                                                                                  | N.A.                                                                                                   |
+| 2   | Nutritionist enters the remark command followed by the index of the patient and the remark content.                                                                                                  | No remark content is provided.<br/>  (a) VitaBook clears the existing re mark and confirms the update. |
+| 3   | VitaBook validates the index.                                                                                                                                                                        | Index is invalid.<br/>  (a) VitaBook displays an error.<br/>  (b) Nutritionist corrects the index.     |
+| 4   | VitaBook updates or adds the remark for the patient.                                                                                                                                                 | Patient is added/edited from a filtered list. <br/> (a) VitaBook uses the filtered index correctly.    |
+| 5   | VitaBook displays a success message. After adding/editing a remark, VitaBook returns to displaying the full list, ordered by the order of entry or by the last sort criteria applied. Use case ends. | N.A.                                                                                                   |
 
 **Use Case: UC05 - Change Patient Priority**
 
@@ -915,7 +915,7 @@ User stories for the MVP version:
 | 2   | Nutritionist types the pr command with the patient index and new priority (high, medium, or low). | Invalid index.<br/>  (a) VitaBook displays an error.<br/>  (b) Nutritionist retypes the command.                                                 |
 | 3   | VitaBook validates the index and new priority value.                                              | Priority value is not among allowed options.<br/>  (a) VitaBook displays constraint error.<br/>  (b) Nutritionist retries with a valid priority. |
 | 4   | VitaBook updates the patient’s priority.                                                          | N.A.                                                                                                                                             |
-| 5   | VitaBook displays a confirmation message. Use case ends.                                          | Patient's priority is set from a filtered list </br> (a) VitaBook stays on the current filtered list after updating the priority.                |
+| 5   | VitaBook displays a confirmation message. Use case ends.                                          | Patient's priority is set from a filtered list. </br> (a) VitaBook stays on the current filtered list after updating the priority.               |
 
 **Use Case: UC06 - Find Patient by Name**
 
@@ -948,16 +948,17 @@ User stories for the MVP version:
 | 2   | Nutritionist types the sort command with the desired field (e.g. sort name). | Field specified is invalid.<br/>  (a) VitaBook shows a list of valid fields and an error message. |
 | 3   | VitaBook sorts the patient list based on the chosen field.                   | N.A.                                                                                              |
 | 3   | VitaBook displays the sorted list. Use case ends.                            | (a) If the list was filtered before sorting, only the filtered subset is sorted.                  |
+
 **Use Case: UC09 - Delete Patient**
 
 **MSS:**
 
-| No. | MSS                                                                  | Extensions                                                                                                        |
-|-----|----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
-| 1   | Nutritionist wants to remove a patient from the system.              | N.A.                                                                                                              |
-| 2   | Nutritionist types the delete command with either an index or email. | The index or email is invalid or not found.<br/>  (a) VitaBook displays an error.                                 |
-| 3   | VitaBook validates the input and deletes the patient.                | N.A.                                                                                                              |
-| 3   | VitaBook displays a confirmation message. Use case ends.             | Patient is deleted from a filtered list <br/> (a) VitaBook stays on the current filtered list after the deletion. |
+| No. | MSS                                                                  | Extensions                                                                                                         |
+|-----|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| 1   | Nutritionist wants to remove a patient from the system.              | N.A.                                                                                                               |
+| 2   | Nutritionist types the delete command with either an index or email. | The index or email is invalid or not found.<br/>  (a) VitaBook displays an error.                                  |
+| 3   | VitaBook validates the input and deletes the patient.                | N.A.                                                                                                               |
+| 3   | VitaBook displays a confirmation message. Use case ends.             | Patient is deleted from a filtered list. <br/> (a) VitaBook stays on the current filtered list after the deletion. |
 
 **Use Case: UC10 - History Navigation**
 
@@ -1100,11 +1101,11 @@ Given below are instructions to test the app manually.
 
 ### **Command Tests**
 #### **Add Patient**
-| Test Case                                                                                                       | Prerequisite | Expected Outcome                                    |
-|-----------------------------------------------------------------------------------------------------------------|--------------|-----------------------------------------------------|
-| `add n/John Doe g/m h/1.75 w/70.00 no/91234567 e/john@example.com a/Block 123 d/low sodium m/2025-04-01 pr/low` | No patient with `john@example.com` | Success + new patient listed                        |
-| `add` (no fields)                                                                                               | - | Shows `MESSAGE_USAGE` with required fields          |
-| `add n/Alice Tan ... e/john@example.com ...`                                                                    | Patient with `john@example.com` exists | Error: `"This patient already exists in VitaBook."` |
+| Test Case                                                                                                       | Prerequisite | Expected Outcome                                   |
+|-----------------------------------------------------------------------------------------------------------------|--------------|----------------------------------------------------|
+| `add n/John Doe g/m h/1.75 w/70.00 no/91234567 e/john@example.com a/Block 123 d/low sodium m/2025-04-01 pr/low` | No patient with `john@example.com` | Success + new patient listed                       |
+| `add` (no fields)                                                                                               | - | Shows `MESSAGE_USAGE` with required fields         |
+| `add n/Alice Tan ... e/john@example.com ...`                                                                    | Patient with `john@example.com` exists | Error: `"This person already exists in VitaBook."` |
 
 #### **Edit Patient**
 | Test Case                    | Prerequisite | Expected Outcome                                       |
