@@ -600,7 +600,7 @@ Furthermore, certain edits can cause the VitaBook to behave in unexpected ways (
 ---
 
 **❓ Q: What kind of info can I store about a patient?**  
-**💬 A:** Everything you need: name, phone, email, address, gender, height, weight, diet, allergies, meeting date, priority level, and remarks. It’s like a one-stop record for every patient.
+**💬 A:** Everything you need: name, phone number, email, address, gender, height, weight, diet, allergies, meeting date, priority level, and remarks. It’s like a one-stop record for every patient.
 
 ---
 
@@ -610,7 +610,7 @@ Furthermore, certain edits can cause the VitaBook to behave in unexpected ways (
 ---
 
 **❓ Q: Can I undo other actions too?**  
-**💬 A:** Yes! Whether it’s a delete, edit, or clear, the `undo` command has your back. You can even redo something if you changed your mind.
+**💬 A:** You can only `undo` actions that may modify data in the patient list  (i.e. `add`, `edit`, `delete`, `remark`, `clear`, `priority`, `redo`).
 
 ---
 
@@ -699,7 +699,7 @@ java -jar vitabook.jar
 Your way of deciding **how urgent a patient's needs are**. Higher priority = more attention needed.
 
 **Diet**  
-The **nutrition plan** you've prescribed for a patient — like “low sodium”, “high protein”, or “vegetarian”.
+The **nutrition plan** you've prescribed for a patient — like “low sodium”, “low fat”, "low carb" or “low sugar”.
 
 **Allergy**  
 Any food or substance the patient should avoid — this helps you keep their plan safe and accurate.
